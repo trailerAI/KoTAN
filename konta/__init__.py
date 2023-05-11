@@ -1,0 +1,1 @@
+from konta.konta import KoNTA
