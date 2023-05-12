@@ -26,8 +26,6 @@ class KoNTA:
     def __new__(
             cls,
             task: str,
-            text: str,
-            src: str,
             tgt: str
             ):
         
@@ -35,12 +33,6 @@ class KoNTA:
             raise KeyError("Unknown task {}, available tasks are {}".format(
                 task,
                 list(SUPPORTED_TASKS.keys()),
-            ))
-        
-        if src not in LANG_ALIASES:
-            raise KeyError("Unknown source language {}, available source languages are {}".format(
-                task,
-                list(LANG_ALIASES.keys()),
             ))
 
         if tgt not in LANG_ALIASES:
@@ -52,10 +44,10 @@ class KoNTA:
         device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
         task_module = SUPPORTED_TASKS[task](
-            text,
-            LANG_ALIASES[src],
-            LANG_ALIASES[tgt]
-        ).predict(device)
+            task,
+            LANG_ALIASES[tgt],
+            LANG_ALIASES
+        ).load(device)
 
         return task_module
 

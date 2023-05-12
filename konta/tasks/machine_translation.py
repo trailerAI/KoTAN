@@ -1,4 +1,7 @@
 from transformers import NllbTokenizer, AutoModelForSeq2SeqLM
+import torch
+from tqdm import tqdm
+from transformers import BatchEncoding
 
 class KoNTATranslationFactory():
     """
@@ -15,49 +18,70 @@ class KoNTATranslationFactory():
         +-----------------+-----------------+------------+
 
     Args:
-        text (str): input text to be translated
         src (str): source language
-        tgt (str): target language
         
     Returns:
-        str: machine translation sentence
+        str: machine translation Class
 
     Examples:
-        >>> mt = KoNTA(task="translation", src="en")
+        >>> mt = KoNTA(task="translation", tgt="en")
     """
     def __init__(
             self,
-            text: str,
+            task: str,
             src: str,
-            tgt: str 
+            LANG_ALIASES: dict
             ):
         super().__init__()
-        self.text = text
+        self.task = task
         self.src = src
-        self.tgt = tgt
+        self.LANG_ALIASES = LANG_ALIASES
 
-    def predict(self, device:str):
+    def load(self, device: str):
+        tokenizer = NllbTokenizer.from_pretrained("facebook/nllb-200-distilled-600M", src_lang=self.src)
+        model = AutoModelForSeq2SeqLM.from_pretrained("facebook/nllb-200-distilled-600M").to(device)
+
+        return KoNTATranslation(
+            model,
+            tokenizer,
+            device,
+            self.LANG_ALIASES
+        )
+    
+
+class KoNTATranslation:
+    def __init__(self, model, tokenizer, device, LANG_ALIASES) -> None:
+        self.model = model
+        self.tokenizer = tokenizer
+        self.device = device
+        self.LANG_ALIASES = LANG_ALIASES
+
+    def predict(self, text, tgt):
         """
-        Load fine tuned NLLB machine translation model
+        Predict a translation result
 
         Args:
-            device (str): device information
+            text (str): input text
+            tgt (str): target language
 
         Returns:
-            object: fine tuned NLLB machine translation model
+            output (str): A translation result
         """
+        
+        inputs = self.tokenizer(text, return_tensor="pt")
 
-        tokenizer = NllbTokenizer.from_pretrained("facebook/nllb-200-distilled-600M", legacy_behaviour=True, src_lang=self.src, tgt_lang=self.tgt)
-        model = AutoModelForSeq2SeqLM.from_pretrained("facebook/nllb-200-distilled-600M")
-
-        inputs = tokenizer(self.text, return_tensor="pt")
-
-        print(inputs)
-
-        translated_tokens = model.generate(
-            **inputs, forced_bos_token_id=tokenizer.lang_code_to_id[self.tgt], max_length=128
+        if isinstance(inputs['input_ids'], list):
+            input_dict = {}            
+            input_dict['input_ids'] = torch.LongTensor(inputs['input_ids']).reshape(1,len(inputs['input_ids']))
+            input_dict['attention_mask'] = torch.LongTensor(inputs['attention_mask']).reshape(1,len(inputs['attention_mask']))
+            inputs = BatchEncoding(input_dict)
+            
+        translated_tokens = self.model.generate(
+            **inputs.to(self.device), forced_bos_token_id=self.tokenizer.lang_code_to_id[self.LANG_ALIASES[tgt]], max_length=128
         )
 
-        output = tokenizer.batch_decode(translated_tokens, skip_special_tokens=True)[0]
-
+        output = self.tokenizer.batch_decode(translated_tokens, skip_special_tokens=True)
+            
         return output
+    
+
