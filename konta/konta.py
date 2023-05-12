@@ -1,6 +1,6 @@
 import torch
 
-from tasks import (
+from konta.tasks import (
     KoNTATranslationFactory,
     KoNTAAugmentationFactory
 )

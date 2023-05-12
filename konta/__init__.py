@@ -1,2 +1,2 @@
-from __version__ import version as __version__  # noqa
-from konta import KoNTA  # noqa
+from konta.__version__ import version as __version__ 
+from konta.konta import KoNTA

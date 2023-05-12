@@ -2,7 +2,7 @@ import setuptools
 
 setuptools.setup(
     name='KoNTA',
-    version='',
+    version='0.0.1',
     description='',
     author='',
     packages=setuptools.find_packages(),
