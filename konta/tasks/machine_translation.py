@@ -80,7 +80,7 @@ class KoNTATranslation:
             **inputs.to(self.device), forced_bos_token_id=self.tokenizer.lang_code_to_id[self.LANG_ALIASES[tgt]], max_length=128
         )
 
-        output = self.tokenizer.batch_decode(translated_tokens, skip_special_tokens=True)
+        output = self.tokenizer.batch_decode(translated_tokens, skip_special_tokens=True)[0]
             
         return output
     
