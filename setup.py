@@ -1,7 +1,7 @@
 import setuptools
 
 setuptools.setup(
-    name='',
+    name='KoNTA',
     version='',
     description='',
     author='',

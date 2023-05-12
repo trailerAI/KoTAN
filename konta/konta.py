@@ -1,24 +1,82 @@
 import torch
 
-from konta.tasks import (
+from tasks import (
     KoNTATranslationFactory,
     KoNTAAugmentationFactory
 )
 
 SUPPORTED_TASKS = {
     "mt": KoNTATranslationFactory,
-    "machine_translation": KoNTATranslationFactory,
+    "translation": KoNTATranslationFactory,
     "aug": KoNTAAugmentationFactory,
-    "text_augumentation": KoNTAAugmentationFactory
+    "augumentation": KoNTAAugmentationFactory
 }
 
 LANG_ALIASES = {
-    "english": "en",
-    "eng": "en",
-    "korean": "ko",
-    "kor": "ko",
-    "kr": "ko"
+    "english": "eng_Latn",
+    "eng": "eng_Latn",
+    "en": "eng_Latn",
+    "ko": "kor_Hang",
+    "korean": "kor_Hang",
+    "kor": "kor_Hang",
+    "kr": "kor_Hang"
 }
 
 class KoNTA:
-    pass
+    def __new__(
+            cls,
+            task: str,
+            text: str,
+            src: str,
+            tgt: str
+            ):
+        
+        if task not in SUPPORTED_TASKS:
+            raise KeyError("Unknown task {}, available tasks are {}".format(
+                task,
+                list(SUPPORTED_TASKS.keys()),
+            ))
+        
+        if src not in LANG_ALIASES:
+            raise KeyError("Unknown source language {}, available source languages are {}".format(
+                task,
+                list(LANG_ALIASES.keys()),
+            ))
+
+        if tgt not in LANG_ALIASES:
+            raise KeyError("Unknown target language {}, available target languages are {}".format(
+                task,
+                list(LANG_ALIASES.keys()),
+            ))
+        
+        device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+
+        task_module = SUPPORTED_TASKS[task](
+            text,
+            LANG_ALIASES[src],
+            LANG_ALIASES[tgt]
+        ).predict(device)
+
+        return task_module
+
+    @staticmethod
+    def available_tasks() -> str:
+        """
+        Returns available tasks in KoNTA project
+
+        Returns:
+            str: Supported task names
+
+        """
+        return "Available tasks are {}".format(list(SUPPORTED_TASKS.keys()))
+    
+    @staticmethod
+    def available_lang() -> str:
+        """
+        Returns available language in KoNTA project
+
+        Returns:
+            str: Supported language names
+
+        """
+        return "Available tasks are {}".format(list(LANG_ALIASES.keys()))
