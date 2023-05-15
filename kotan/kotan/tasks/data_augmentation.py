@@ -1,8 +1,6 @@
 from transformers import NllbTokenizer, AutoModelForSeq2SeqLM
-from transformers import BatchEncoding
-import torch
 
-class KoNTAAugmentationFactory():
+class KoTANAugmentationFactory():
 
     def __init__(self, task, src, LANG_ALIASES: dict):
         super().__init__()
@@ -16,7 +14,7 @@ class KoNTAAugmentationFactory():
         ko2en_model = AutoModelForSeq2SeqLM.from_pretrained("KoJLabs/nllb-finetuned-ko2en").to(device)
         en2ko_model = AutoModelForSeq2SeqLM.from_pretrained("KoJLabs/nllb-finetuned-en2ko").to(device)
 
-        return KoNTAAugmentation(
+        return KoTANAugmentation(
             tokenizer,
             ko2en_model, en2ko_model,
             device,
@@ -24,7 +22,7 @@ class KoNTAAugmentationFactory():
         )
 
 
-class KoNTAAugmentation:
+class KoTANAugmentation:
 
     def __init__(self, 
                  tokenizer,

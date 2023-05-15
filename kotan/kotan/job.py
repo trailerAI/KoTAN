@@ -1,28 +1,23 @@
 import torch
 
-from konta.tasks import (
-    KoNTATranslationFactory,
-    KoNTAAugmentationFactory
+from .tasks import (
+    KoTANTranslationFactory,
+    KoTANAugmentationFactory
 )
 
+from .const import LANG_ALIASES
+
+
+# Task list
 SUPPORTED_TASKS = {
-    "mt": KoNTATranslationFactory,
-    "translation": KoNTATranslationFactory,
-    "aug": KoNTAAugmentationFactory,
-    "augumentation": KoNTAAugmentationFactory
+    "mt": KoTANTranslationFactory,
+    "translation": KoTANTranslationFactory,
+    "aug": KoTANAugmentationFactory,
+    "augumentation": KoTANAugmentationFactory
 }
 
-LANG_ALIASES = {
-    "english": "eng_Latn",
-    "eng": "eng_Latn",
-    "en": "eng_Latn",
-    "ko": "kor_Hang",
-    "korean": "kor_Hang",
-    "kor": "kor_Hang",
-    "kr": "kor_Hang"
-}
 
-class KoNTA:
+class KoTAN:
     def __new__(
             cls,
             task: str,

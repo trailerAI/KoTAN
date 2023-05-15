@@ -1,9 +1,8 @@
 from transformers import NllbTokenizer, AutoModelForSeq2SeqLM
 import torch
-from tqdm import tqdm
 from transformers import BatchEncoding
 
-class KoNTATranslationFactory():
+class KoTANTranslationFactory():
     """
     Machine translation using NLLN Meta model
 
@@ -16,7 +15,7 @@ class KoNTATranslationFactory():
         str: machine translation Class
 
     Examples:
-        >>> mt = KoNTA(task="translation", tgt="en")
+        >>> mt = KoTAN(task="translation", tgt="en")
     """
     def __init__(
             self,
@@ -38,7 +37,7 @@ class KoNTATranslationFactory():
             tokenizer = NllbTokenizer.from_pretrained("KoJLabs/nllb-finetuned-ko2en", src_lang=self.src)
             model = AutoModelForSeq2SeqLM.from_pretrained("KoJLabs/nllb-finetuned-ko2en").to(device)
 
-        return KoNTATranslation(
+        return KoTANTranslation(
             model,
             tokenizer,
             device,
@@ -46,7 +45,7 @@ class KoNTATranslationFactory():
         )
     
 
-class KoNTATranslation:
+class KoTANTranslation:
     def __init__(self, model, tokenizer, device, LANG_ALIASES) -> None:
         self.model = model
         self.tokenizer = tokenizer
