@@ -11,14 +11,13 @@ class KoNTAAugmentationFactory():
         self.LANG_ALIASES = LANG_ALIASES
 
     def load(self, device):
-        ko2en_tokenizer = NllbTokenizer.from_pretrained("KoJLabs/nllb-finetuned-ko2en")
-        en2ko_tokenizer = NllbTokenizer.from_pretrained("KoJLabs/nllb-finetuned-en2ko")
+        tokenizer = NllbTokenizer.from_pretrained("KoJLabs/nllb-finetuned-ko2en")
 
         ko2en_model = AutoModelForSeq2SeqLM.from_pretrained("KoJLabs/nllb-finetuned-ko2en").to(device)
         en2ko_model = AutoModelForSeq2SeqLM.from_pretrained("KoJLabs/nllb-finetuned-en2ko").to(device)
 
         return KoNTAAugmentation(
-            ko2en_tokenizer, en2ko_tokenizer,
+            tokenizer,
             ko2en_model, en2ko_model,
             device,
             self.LANG_ALIASES
@@ -28,11 +27,10 @@ class KoNTAAugmentationFactory():
 class KoNTAAugmentation:
 
     def __init__(self, 
-                 ko2en_tokenizer, en2ko_tokenizer, 
+                 tokenizer,
                  ko2en_model, en2ko_model, 
                  device, LANG_ALIASES):
-        self.ko2en_tokenizer = ko2en_tokenizer
-        self.en2ko_tokenizer = en2ko_tokenizer
+        self.tokenizer = tokenizer
 
         self.ko2en_model = ko2en_model
         self.en2ko_model = en2ko_model
@@ -43,10 +41,10 @@ class KoNTAAugmentation:
     def predict(self, text):
 
         # ko2en
-        translation = self._translate(text, 'eng_Latn', self.ko2en_tokenizer, self.ko2en_model)
+        translation = self._translate(text, 'eng_Latn', self.tokenizer, self.ko2en_model)
 
         # en2ko
-        backtranslation = self._translate(translation, 'kor_Hang', self.en2ko_tokenizer, self.en2ko_model)
+        backtranslation = self._translate(translation, 'kor_Hang', self.tokenizer, self.en2ko_model)
 
         return backtranslation
 
