@@ -1,14 +1,31 @@
 from transformers import NllbTokenizer, AutoModelForSeq2SeqLM
 
-class KoTANAugmentationFactory():
+class KoTANAugmentationFactory:
+    """
+    Text augmentation using facebook/nllb-200-distilled-600M Meta model
 
-    def __init__(self, task, src, LANG_ALIASES: dict):
+    - dataset: Train
+
+    Args:
+        src (str): source language
+        
+    Returns:
+        class: KoTANAugmentation class
+
+    Examples:
+        >>> mt = KoTAN(task="augumentation", src="ko")
+    """
+
+    def __init__(self, 
+                 task, 
+                 src, 
+                 LANG_ALIASES):
         super().__init__()
         self.task = task
         self.src = src
         self.LANG_ALIASES = LANG_ALIASES
 
-    def load(self, device):
+    def load(self, device: str):
         tokenizer = NllbTokenizer.from_pretrained("KoJLabs/nllb-finetuned-ko2en")
 
         ko2en_model = AutoModelForSeq2SeqLM.from_pretrained("KoJLabs/nllb-finetuned-ko2en").to(device)
@@ -23,7 +40,6 @@ class KoTANAugmentationFactory():
 
 
 class KoTANAugmentation:
-
     def __init__(self, 
                  tokenizer,
                  ko2en_model, en2ko_model, 
@@ -37,6 +53,15 @@ class KoTANAugmentation:
         self.LANG_ALIASES = LANG_ALIASES
 
     def predict(self, text):
+        """
+        Predict a backtranslation result
+
+        Args:
+            text (str): input text
+
+        Returns:
+            output (list): Backtranslation results
+        """
 
         # ko2en
         translation = self._translate(text, 'eng_Latn', self.tokenizer, self.ko2en_model)

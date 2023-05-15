@@ -20,8 +20,8 @@ SUPPORTED_TASKS = {
 class KoTAN:
     def __new__(
             cls,
-            task: str,
-            src: str
+            task,
+            src
             ):
         
         if task not in SUPPORTED_TASKS:
@@ -47,9 +47,9 @@ class KoTAN:
         return task_module
 
     @staticmethod
-    def available_tasks() -> str:
+    def available_tasks():
         """
-        Returns available tasks in KoNTA project
+        Returns available tasks in KoTAN project
 
         Returns:
             str: Supported task names
@@ -58,9 +58,9 @@ class KoTAN:
         return "Available tasks are {}".format(list(SUPPORTED_TASKS.keys()))
     
     @staticmethod
-    def available_lang() -> str:
+    def available_lang():
         """
-        Returns available language in KoNTA project
+        Returns available language in KoTAN project
 
         Returns:
             str: Supported language names

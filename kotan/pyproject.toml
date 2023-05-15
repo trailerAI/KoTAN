@@ -7,7 +7,7 @@ readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "~3.8"
-transformers = "4.29.1"
+transformers = "^4.29.1"
 torch = "2.0.0"
 
 [build-system]

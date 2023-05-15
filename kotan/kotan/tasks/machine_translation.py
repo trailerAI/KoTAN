@@ -2,9 +2,9 @@ from transformers import NllbTokenizer, AutoModelForSeq2SeqLM
 import torch
 from transformers import BatchEncoding
 
-class KoTANTranslationFactory():
+class KoTANTranslationFactory:
     """
-    Machine translation using NLLN Meta model
+    Machine translation using facebook/nllb-200-distilled-600M Meta model
 
     - dataset: Train
 
@@ -12,16 +12,16 @@ class KoTANTranslationFactory():
         src (str): source language
         
     Returns:
-        str: machine translation Class
+        class: KoTANTranslation class
 
     Examples:
         >>> mt = KoTAN(task="translation", tgt="en")
     """
     def __init__(
             self,
-            task: str,
-            src: str,
-            LANG_ALIASES: dict
+            task,
+            src,
+            LANG_ALIASES
             ):
         super().__init__()
         self.task = task
@@ -46,7 +46,7 @@ class KoTANTranslationFactory():
     
 
 class KoTANTranslation:
-    def __init__(self, model, tokenizer, device, LANG_ALIASES) -> None:
+    def __init__(self, model, tokenizer, device, LANG_ALIASES):
         self.model = model
         self.tokenizer = tokenizer
         self.device = device
@@ -61,7 +61,7 @@ class KoTANTranslation:
             tgt (str): target language
 
         Returns:
-            output (str): A translation result
+            output (list): Translation results
         """
         
         inputs = self.tokenizer(text, padding=True, truncation=True, return_tensors="pt")
