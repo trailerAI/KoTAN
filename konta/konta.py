@@ -26,7 +26,7 @@ class KoNTA:
     def __new__(
             cls,
             task: str,
-            tgt: str
+            src: str
             ):
         
         if task not in SUPPORTED_TASKS:
@@ -35,7 +35,7 @@ class KoNTA:
                 list(SUPPORTED_TASKS.keys()),
             ))
 
-        if tgt not in LANG_ALIASES:
+        if src not in LANG_ALIASES:
             raise KeyError("Unknown target language {}, available target languages are {}".format(
                 task,
                 list(LANG_ALIASES.keys()),
@@ -45,7 +45,7 @@ class KoNTA:
 
         task_module = SUPPORTED_TASKS[task](
             task,
-            LANG_ALIASES[tgt],
+            LANG_ALIASES[src],
             LANG_ALIASES
         ).load(device)
 

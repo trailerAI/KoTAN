@@ -38,8 +38,13 @@ class KoNTATranslationFactory():
         self.LANG_ALIASES = LANG_ALIASES
 
     def load(self, device: str):
-        tokenizer = NllbTokenizer.from_pretrained("facebook/nllb-200-distilled-600M", src_lang=self.src)
-        model = AutoModelForSeq2SeqLM.from_pretrained("facebook/nllb-200-distilled-600M").to(device)
+        if self.src == "eng_Latn":
+            tokenizer = NllbTokenizer.from_pretrained("KoJLabs/nllb-finetuned-en2ko")
+            model = AutoModelForSeq2SeqLM.from_pretrained("KoJLabs/nllb-finetuned-en2ko").to(device)
+            
+        if self.src == "kor_Hang":
+            tokenizer = NllbTokenizer.from_pretrained("KoJLabs/nllb-finetuned-ko2en", src_lang=self.src)
+            model = AutoModelForSeq2SeqLM.from_pretrained("KoJLabs/nllb-finetuned-ko2en").to(device)
 
         return KoNTATranslation(
             model,
