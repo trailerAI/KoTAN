@@ -1,2 +1,0 @@
-from konta_demo.tasks.machine_translation import KoNTATranslationFactory
-from konta_demo.tasks.data_augumentation import KoNTAAugmentationFactory
