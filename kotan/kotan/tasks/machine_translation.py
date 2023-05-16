@@ -1,4 +1,4 @@
-from transformers import NllbTokenizer, AutoModelForSeq2SeqLM
+from transformers import AutoTokenizer, AutoModelForSeq2SeqLM
 import torch
 from transformers import BatchEncoding
 
@@ -31,11 +31,11 @@ class KoTANTranslationFactory:
 
     def load(self, device: str):
         if self.tgt == "kor_Hang":
-            tokenizer = NllbTokenizer.from_pretrained("KoJLabs/nllb-finetuned-en2ko")
+            tokenizer = AutoTokenizer.from_pretrained("KoJLabs/nllb-finetuned-en2ko")
             model = AutoModelForSeq2SeqLM.from_pretrained("KoJLabs/nllb-finetuned-en2ko").to(device)
             
         if self.tgt == "eng_Latn":
-            tokenizer = NllbTokenizer.from_pretrained("KoJLabs/nllb-finetuned-ko2en")
+            tokenizer = AutoTokenizer.from_pretrained("KoJLabs/nllb-finetuned-ko2en")
             model = AutoModelForSeq2SeqLM.from_pretrained("KoJLabs/nllb-finetuned-ko2en").to(device)
 
         return KoTANTranslation(

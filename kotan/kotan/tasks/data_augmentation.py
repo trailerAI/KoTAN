@@ -1,4 +1,4 @@
-from transformers import NllbTokenizer, AutoModelForSeq2SeqLM
+from transformers import AutoTokenizer, AutoModelForSeq2SeqLM
 
 class KoTANAugmentationFactory:
     """
@@ -29,16 +29,16 @@ class KoTANAugmentationFactory:
 
     def load(self, device):
         if self.level == "fine":
-            ko2en_tokenizer = NllbTokenizer.from_pretrained("KoJLabs/nllb-finetuned-ko2en")
-            en2ko_tokenizer = NllbTokenizer.from_pretrained("KoJLabs/nllb-finetuned-en2ko")
+            ko2en_tokenizer = AutoTokenizer.from_pretrained("KoJLabs/nllb-finetuned-ko2en")
+            en2ko_tokenizer = AutoTokenizer.from_pretrained("KoJLabs/nllb-finetuned-en2ko")
 
             ko2en_model = AutoModelForSeq2SeqLM.from_pretrained("KoJLabs/nllb-finetuned-ko2en").to(device)
             en2ko_model = AutoModelForSeq2SeqLM.from_pretrained("KoJLabs/nllb-finetuned-en2ko").to(device)
 
         
         elif self.level == "origin":
-            ko2en_tokenizer = NllbTokenizer.from_pretrained("facebook/nllb-200-distilled-600M", src_lang="kor_Hang", tgt_lang="eng_Latn")
-            en2ko_tokenizer = NllbTokenizer.from_pretrained("facebook/nllb-200-distilled-600M", src_lang="eng_Latn", tgt_lang="kor_Hang")
+            ko2en_tokenizer = AutoTokenizer.from_pretrained("facebook/nllb-200-distilled-600M", src_lang="kor_Hang", tgt_lang="eng_Latn")
+            en2ko_tokenizer = AutoTokenizer.from_pretrained("facebook/nllb-200-distilled-600M", src_lang="eng_Latn", tgt_lang="kor_Hang")
 
             ko2en_model = AutoModelForSeq2SeqLM.from_pretrained("facebook/nllb-200-distilled-600M").to(device)
             en2ko_model = AutoModelForSeq2SeqLM.from_pretrained("facebook/nllb-200-distilled-600M").to(device)
