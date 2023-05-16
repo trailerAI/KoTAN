@@ -1,11 +1,10 @@
 from transformers import NllbTokenizer, AutoModelForSeq2SeqLM
 import torch
-from tqdm import tqdm
 from transformers import BatchEncoding
 
-class KoNTATranslationFactory():
+class KoTANTranslationFactory:
     """
-    Machine translation using NLLN Meta model
+    Machine translation using facebook/nllb-200-distilled-600M Meta model
 
     - dataset: Train
 
@@ -13,32 +12,33 @@ class KoNTATranslationFactory():
         src (str): source language
         
     Returns:
-        str: machine translation Class
+        class: KoTANTranslation class
 
     Examples:
-        >>> mt = KoNTA(task="translation", tgt="en")
+        >>> mt = KoTAN(task="translation", tgt="en")
     """
     def __init__(
             self,
-            task: str,
-            src: str,
-            LANG_ALIASES: dict
+            task,
+            tgt,
+            LANG_ALIASES,
+            level
             ):
         super().__init__()
         self.task = task
-        self.src = src
+        self.tgt = tgt
         self.LANG_ALIASES = LANG_ALIASES
 
     def load(self, device: str):
-        if self.src == "eng_Latn":
+        if self.tgt == "kor_Hang":
             tokenizer = NllbTokenizer.from_pretrained("KoJLabs/nllb-finetuned-en2ko")
             model = AutoModelForSeq2SeqLM.from_pretrained("KoJLabs/nllb-finetuned-en2ko").to(device)
             
-        if self.src == "kor_Hang":
-            tokenizer = NllbTokenizer.from_pretrained("KoJLabs/nllb-finetuned-ko2en", src_lang=self.src)
+        if self.tgt == "eng_Latn":
+            tokenizer = NllbTokenizer.from_pretrained("KoJLabs/nllb-finetuned-ko2en")
             model = AutoModelForSeq2SeqLM.from_pretrained("KoJLabs/nllb-finetuned-ko2en").to(device)
 
-        return KoNTATranslation(
+        return KoTANTranslation(
             model,
             tokenizer,
             device,
@@ -46,8 +46,8 @@ class KoNTATranslationFactory():
         )
     
 
-class KoNTATranslation:
-    def __init__(self, model, tokenizer, device, LANG_ALIASES) -> None:
+class KoTANTranslation:
+    def __init__(self, model, tokenizer, device, LANG_ALIASES):
         self.model = model
         self.tokenizer = tokenizer
         self.device = device
@@ -62,7 +62,7 @@ class KoNTATranslation:
             tgt (str): target language
 
         Returns:
-            output (str): A translation result
+            output (list): Translation results
         """
         
         inputs = self.tokenizer(text, padding=True, truncation=True, return_tensors="pt")
