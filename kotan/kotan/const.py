@@ -7,3 +7,10 @@ LANG_ALIASES = {
     "kor": "kor_Hang",
     "kr": "kor_Hang"
 }
+LEVEL = {
+    "fine": "fine",
+    "fine-tuned": "fine",
+    "origin": "origin",
+    "0": "origin",
+    "1": "fine"
+}

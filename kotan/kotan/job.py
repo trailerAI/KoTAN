@@ -5,7 +5,7 @@ from .tasks import (
     KoTANAugmentationFactory
 )
 
-from .const import LANG_ALIASES
+from .const import LANG_ALIASES, LEVEL
 
 
 # Task list
@@ -21,7 +21,8 @@ class KoTAN:
     def __new__(
             cls,
             task,
-            src
+            tgt="en",
+            level="fine"
             ):
         
         if task not in SUPPORTED_TASKS:
@@ -30,18 +31,25 @@ class KoTAN:
                 list(SUPPORTED_TASKS.keys()),
             ))
 
-        if src not in LANG_ALIASES:
+        if tgt not in LANG_ALIASES:
             raise KeyError("Unknown target language {}, available target languages are {}".format(
                 task,
                 list(LANG_ALIASES.keys()),
+            ))
+        
+        if level not in LEVEL:
+            raise KeyError("Unknown level {}, available levels are {}".format(
+                task,
+                list(LEVEL.keys()),
             ))
         
         device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
         task_module = SUPPORTED_TASKS[task](
             task,
-            LANG_ALIASES[src],
-            LANG_ALIASES
+            LANG_ALIASES[tgt],
+            LANG_ALIASES,
+            LEVEL[level]
         ).load(device)
 
         return task_module
@@ -67,3 +75,14 @@ class KoTAN:
 
         """
         return "Available tasks are {}".format(list(LANG_ALIASES.keys()))
+    
+    @staticmethod
+    def available_level():
+        """
+        Returns available level in KoTAN project
+
+        Returns:
+            str: Supported level names
+
+        """
+        return "Available tasks are {}".format(list(LEVEL.keys()))

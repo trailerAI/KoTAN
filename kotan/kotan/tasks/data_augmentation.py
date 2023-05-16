@@ -13,26 +13,38 @@ class KoTANAugmentationFactory:
         class: KoTANAugmentation class
 
     Examples:
-        >>> mt = KoTAN(task="augumentation", src="ko")
+        >>> mt = KoTAN(task="augumentation", level="fine")
     """
 
     def __init__(self, 
                  task, 
-                 src, 
-                 LANG_ALIASES):
+                 tgt, 
+                 LANG_ALIASES,
+                 level):
         super().__init__()
         self.task = task
-        self.src = src
+        self.tgt = tgt
         self.LANG_ALIASES = LANG_ALIASES
+        self.level = level
 
-    def load(self, device: str):
-        tokenizer = NllbTokenizer.from_pretrained("KoJLabs/nllb-finetuned-ko2en")
+    def load(self, device):
+        if self.level == "fine":
+            ko2en_tokenizer = NllbTokenizer.from_pretrained("KoJLabs/nllb-finetuned-ko2en")
+            en2ko_tokenizer = NllbTokenizer.from_pretrained("KoJLabs/nllb-finetuned-en2ko")
 
-        ko2en_model = AutoModelForSeq2SeqLM.from_pretrained("KoJLabs/nllb-finetuned-ko2en").to(device)
-        en2ko_model = AutoModelForSeq2SeqLM.from_pretrained("KoJLabs/nllb-finetuned-en2ko").to(device)
+            ko2en_model = AutoModelForSeq2SeqLM.from_pretrained("KoJLabs/nllb-finetuned-ko2en").to(device)
+            en2ko_model = AutoModelForSeq2SeqLM.from_pretrained("KoJLabs/nllb-finetuned-en2ko").to(device)
+
+        
+        elif self.level == "origin":
+            ko2en_tokenizer = NllbTokenizer.from_pretrained("facebook/nllb-200-distilled-600M", src_lang="kor_Hang", tgt_lang="eng_Latn")
+            en2ko_tokenizer = NllbTokenizer.from_pretrained("facebook/nllb-200-distilled-600M", src_lang="eng_Latn", tgt_lang="kor_Hang")
+
+            ko2en_model = AutoModelForSeq2SeqLM.from_pretrained("facebook/nllb-200-distilled-600M").to(device)
+            en2ko_model = AutoModelForSeq2SeqLM.from_pretrained("facebook/nllb-200-distilled-600M").to(device)
 
         return KoTANAugmentation(
-            tokenizer,
+            ko2en_tokenizer, en2ko_tokenizer,
             ko2en_model, en2ko_model,
             device,
             self.LANG_ALIASES
@@ -41,10 +53,11 @@ class KoTANAugmentationFactory:
 
 class KoTANAugmentation:
     def __init__(self, 
-                 tokenizer,
+                 ko2en_tokenizer, en2ko_tokenizer,
                  ko2en_model, en2ko_model, 
                  device, LANG_ALIASES):
-        self.tokenizer = tokenizer
+        self.ko2en_tokenizer = ko2en_tokenizer
+        self.en2ko_tokenizer = en2ko_tokenizer
 
         self.ko2en_model = ko2en_model
         self.en2ko_model = en2ko_model
@@ -64,10 +77,10 @@ class KoTANAugmentation:
         """
 
         # ko2en
-        translation = self._translate(text, 'eng_Latn', self.tokenizer, self.ko2en_model)
+        translation = self._translate(text, 'eng_Latn', self.ko2en_tokenizer, self.ko2en_model)
 
         # en2ko
-        backtranslation = self._translate(translation, 'kor_Hang', self.tokenizer, self.en2ko_model)
+        backtranslation = self._translate(translation, 'kor_Hang', self.en2ko_tokenizer, self.en2ko_model)
 
         return backtranslation
 

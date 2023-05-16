@@ -20,21 +20,22 @@ class KoTANTranslationFactory:
     def __init__(
             self,
             task,
-            src,
-            LANG_ALIASES
+            tgt,
+            LANG_ALIASES,
+            level
             ):
         super().__init__()
         self.task = task
-        self.src = src
+        self.tgt = tgt
         self.LANG_ALIASES = LANG_ALIASES
 
     def load(self, device: str):
-        if self.src == "eng_Latn":
+        if self.tgt == "kor_Hang":
             tokenizer = NllbTokenizer.from_pretrained("KoJLabs/nllb-finetuned-en2ko")
             model = AutoModelForSeq2SeqLM.from_pretrained("KoJLabs/nllb-finetuned-en2ko").to(device)
             
-        if self.src == "kor_Hang":
-            tokenizer = NllbTokenizer.from_pretrained("KoJLabs/nllb-finetuned-ko2en", src_lang=self.src)
+        if self.tgt == "eng_Latn":
+            tokenizer = NllbTokenizer.from_pretrained("KoJLabs/nllb-finetuned-ko2en")
             model = AutoModelForSeq2SeqLM.from_pretrained("KoJLabs/nllb-finetuned-ko2en").to(device)
 
         return KoTANTranslation(
