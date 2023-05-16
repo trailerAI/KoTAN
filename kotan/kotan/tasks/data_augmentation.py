@@ -13,7 +13,7 @@ class KoTANAugmentationFactory:
         class: KoTANAugmentation class
 
     Examples:
-        >>> mt = KoTAN(task="augumentation", level="fine")
+        >>> mt = KoTAN(task="augmentation", level="fine")
     """
 
     def __init__(self, 

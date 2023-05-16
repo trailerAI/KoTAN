@@ -13,7 +13,7 @@ SUPPORTED_TASKS = {
     "mt": KoTANTranslationFactory,
     "translation": KoTANTranslationFactory,
     "aug": KoTANAugmentationFactory,
-    "augumentation": KoTANAugmentationFactory
+    "augmentation": KoTANAugmentationFactory
 }
 
 
