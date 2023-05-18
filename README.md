@@ -21,7 +21,7 @@ mt.predict(inputs, 'en')
 ```
 from kotan import KoTAN
 
-bt=KoTAN(task="augumentation", level="origin")
+bt=KoTAN(task="augmentation", level="origin")
 inputs=['나는 온 세상 사람들이 행복해지길 바라', '나는 선한 영향력을 펼치는 사람이 되고 싶어']
 bt.predict(inputs)
 ```
@@ -30,7 +30,7 @@ bt.predict(inputs)
 ```
 from kotan import KoTAN
 
-bt = KoTAN(task="augumentation", level="fine")
+bt = KoTAN(task="augmentation", level="fine")
 inputs=['나는 온 세상 사람들이 행복해지길 바라', '나는 선한 영향력을 펼치는 사람이 되고 싶어']
 bt.predict(inputs)
 ```
