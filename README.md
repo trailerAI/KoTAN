@@ -59,6 +59,9 @@ pip3 install kotan
 >>> aug.predict(inputs)
 ```
 
+## Update soon...
+- 말투 바꿔주는 옵션 추가 예정
+
 ## Citation
 KoTAN 라이브러리를 프로젝트 혹은 연구에 활용하신다면 아래 정보를 인용해주시길 바랍니다.
 ```
