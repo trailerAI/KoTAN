@@ -1,11 +1,15 @@
-# Usage 1. pip
+# KoTAN: Korean Translation and Augmentation with fine-tuned NLLB
+NLLB 모델을 fine-tuning하여 한국어 번역 및 한국어 데이터 셋을 증강할 수 있는 python 패키지 입니다.
+사용법은 아래와 같습니다.
 
-## Package install
+## Usage 1. pip
+
+### Package install
 ```
 pip3 install kotan
 ```
 
-## Translation
+### Translation
 ```
 from kotan import KoTAN
 
@@ -15,7 +19,7 @@ inputs=['나는 온 세상 사람들이 행복해지길 바라', '나는 선한 
 mt.predict(inputs, 'en')
 ```
 
-## Backtranslation
+### Backtranslation
 
 #### Origin nllb model (before fine-tuning)
 ```
