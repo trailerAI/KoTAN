@@ -3,8 +3,8 @@
 영->한, 한->영 번역 및 한국어 데이터 셋을 증강할 수 있도록 도와주는 라이브러리 `KoTAN`입니다.
 번역 모델의 경우, facebook의 [NLLB](https://arxiv.org/abs/2207.04672) 모델을 [fine-tuning](https://github.com/KoJLabs/fine-tuning-nllb)하였고, 데이터 셋 증강의 경우 backtranslation 과정을 거쳐 진행했습니다.
 
-* [영->한 모델](https://huggingface.co/KoJLabs/nllb-finetuned-en2ko)
-* [한->영 모델](https://huggingface.co/KoJLabs/nllb-finetuned-ko2en) 
+* [Fine-tuning 영->한 모델](https://huggingface.co/KoJLabs/nllb-finetuned-en2ko)
+* [Fine-tuning 한->영 모델](https://huggingface.co/KoJLabs/nllb-finetuned-ko2en) 
 
 ## Package install
 * `torch=2.0.0 (cuda 12.0)`과 `python>=3.8` 환경에서 정상적으로 동작합니다.
