@@ -62,7 +62,7 @@ pip3 install kotan
 
 ## Citation
 ```
-@misc{pororo,
+@misc{KoTAN,
   author       = {Juhwan Lee and Jisu Kim},
   title        = {KoTAN: Korean Translation and Augmentation with fine-tuned NLLB},
   howpublished = {\url{https://github.com/KoJLabs/KoTAN}},
