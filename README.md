@@ -79,6 +79,14 @@ pip3 install kotan
 >>> aug.predict(inputs)
 ```
 
+#### Apply style-convert option.
+```python
+>>> from kotan import KoTAN
+>>> aug = KoTAN(task="augmentation", style="chat")
+>>> inputs=['나는 온 세상 사람들이 행복해지길 바라', '나는 선한 영향력을 펼치는 사람이 되고 싶어']
+>>> aug.predict(inputs)
+```
+
 ### Speech-style conversion
 ```python
 >>> from kotan import KoTAN
@@ -86,6 +94,9 @@ pip3 install kotan
 >>> inputs=['나는 온 세상 사람들이 행복해지길 바라', '나는 선한 영향력을 펼치는 사람이 되고 싶어']
 >>> style.predict(inputs)
 ```
+
+## Demo
+[Huggingface KoTAN space](https://huggingface.co/spaces/KoJLabs/KoTAN)
 
 ## Citation
 ```
