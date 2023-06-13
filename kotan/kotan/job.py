@@ -2,10 +2,11 @@ import torch
 
 from .tasks import (
     KoTANTranslationFactory,
-    KoTANAugmentationFactory
+    KoTANAugmentationFactory,
+    KoTANStyleConversiontFactory
 )
 
-from .const import LANG_ALIASES, LEVEL
+from .const import LANG_ALIASES, LEVEL, STYLE
 
 
 # Task list
@@ -13,7 +14,9 @@ SUPPORTED_TASKS = {
     "mt": KoTANTranslationFactory,
     "translation": KoTANTranslationFactory,
     "aug": KoTANAugmentationFactory,
-    "augmentation": KoTANAugmentationFactory
+    "augmentation": KoTANAugmentationFactory,
+    "style": KoTANStyleConversiontFactory,
+    "convert": KoTANStyleConversiontFactory
 }
 
 
@@ -22,7 +25,8 @@ class KoTAN:
             cls,
             task,
             tgt="en",
-            level="fine"
+            level="fine",
+            style="formal"
             ):
         
         if task not in SUPPORTED_TASKS:
@@ -43,13 +47,19 @@ class KoTAN:
                 list(LEVEL.keys()),
             ))
         
+        if style not in STYLE:
+            raise KeyError("Unknown style {}, available levels are {}".format(
+                task,
+                list(STYLE.keys()),
+            ))
+        
         device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
         task_module = SUPPORTED_TASKS[task](
             task,
             LANG_ALIASES[tgt],
-            LANG_ALIASES,
-            LEVEL[level]
+            LEVEL[level],
+            STYLE[style]
         ).load(device)
 
         return task_module
@@ -86,3 +96,14 @@ class KoTAN:
 
         """
         return "Available tasks are {}".format(list(LEVEL.keys()))
+    
+    @staticmethod
+    def available_style():
+        """
+        Returns available convert style in KoTAN project
+
+        Returns:
+            str: Supported style names
+
+        """
+        return "Available tasks are {}".format(list(STYLE.keys()))

@@ -19,12 +19,12 @@ class KoTANAugmentationFactory:
     def __init__(self, 
                  task, 
                  tgt, 
-                 LANG_ALIASES,
-                 level):
+                 level,
+                 style
+                 ):
         super().__init__()
         self.task = task
         self.tgt = tgt
-        self.LANG_ALIASES = LANG_ALIASES
         self.level = level
 
     def load(self, device):
@@ -47,7 +47,6 @@ class KoTANAugmentationFactory:
             ko2en_tokenizer, en2ko_tokenizer,
             ko2en_model, en2ko_model,
             device,
-            self.LANG_ALIASES
         )
 
 
@@ -55,7 +54,7 @@ class KoTANAugmentation:
     def __init__(self, 
                  ko2en_tokenizer, en2ko_tokenizer,
                  ko2en_model, en2ko_model, 
-                 device, LANG_ALIASES):
+                 device):
         self.ko2en_tokenizer = ko2en_tokenizer
         self.en2ko_tokenizer = en2ko_tokenizer
 
@@ -63,7 +62,6 @@ class KoTANAugmentation:
         self.en2ko_model = en2ko_model
 
         self.device = device
-        self.LANG_ALIASES = LANG_ALIASES
 
     def predict(self, text):
         """

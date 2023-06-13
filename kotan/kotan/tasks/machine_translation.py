@@ -21,13 +21,12 @@ class KoTANTranslationFactory:
             self,
             task,
             tgt,
-            LANG_ALIASES,
-            level
+            level,
+            style
             ):
         super().__init__()
         self.task = task
         self.tgt = tgt
-        self.LANG_ALIASES = LANG_ALIASES
 
     def load(self, device: str):
         if self.tgt == "kor_Hang":
@@ -42,39 +41,32 @@ class KoTANTranslationFactory:
             model,
             tokenizer,
             device,
-            self.LANG_ALIASES
+            self.tgt
         )
     
 
 class KoTANTranslation:
-    def __init__(self, model, tokenizer, device, LANG_ALIASES):
+    def __init__(self, model, tokenizer, device, tgt):
         self.model = model
         self.tokenizer = tokenizer
         self.device = device
-        self.LANG_ALIASES = LANG_ALIASES
+        self.tgt = tgt
 
-    def predict(self, text, tgt):
+    def predict(self, text):
         """
         Predict a translation result
 
         Args:
             text (str): input text
-            tgt (str): target language
 
         Returns:
             output (list): Translation results
         """
         
         inputs = self.tokenizer(text, padding=True, truncation=True, return_tensors="pt")
-
-        if isinstance(inputs['input_ids'], list):
-            input_dict = {}            
-            input_dict['input_ids'] = torch.LongTensor(inputs['input_ids']).reshape(1,len(inputs['input_ids']))
-            input_dict['attention_mask'] = torch.LongTensor(inputs['attention_mask']).reshape(1,len(inputs['attention_mask']))
-            inputs = BatchEncoding(input_dict)
             
         translated_tokens = self.model.generate(
-            **inputs.to(self.device), forced_bos_token_id=self.tokenizer.lang_code_to_id[self.LANG_ALIASES[tgt]], max_length=128
+            **inputs.to(self.device), forced_bos_token_id=self.tokenizer.lang_code_to_id[self.tgt], max_length=128
         )
 
         output = self.tokenizer.batch_decode(translated_tokens, skip_special_tokens=True)

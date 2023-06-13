@@ -30,13 +30,34 @@ pip3 install kotan
 ```
   - origin: Before fine-tuning nllb model.
   - fine: After fine-tuning nllb model.
+* Speech-style conversion options
+```python
+>>> KoTAN.available_style()
+```
+* formal: 문어체
+* informal: 구어체
+* android: 안드로이드
+* azae: 아재
+* chat: 채팅
+* choding: 초등학생
+* emoticon: 이모티콘
+* enfp: enfp
+* gentle: 신사
+* halbae: 할아버지
+* halmae: 할머니
+* joongding: 중학생
+* king: 왕
+* naruto: 나루토
+* seonbi: 선비
+* sosim: 소심한
+* translator: 번역기
 
 ### Translation
 ```python
 >>> from kotan import KoTAN
 >>> mt = KoTAN(task="translation", tgt="en")
 >>> inputs = ['나는 온 세상 사람들이 행복해지길 바라', '나는 선한 영향력을 펼치는 사람이 되고 싶어']
->>> mt.predict(inputs, 'en')
+>>> mt.predict(inputs)
 ```
 
 ### Data Augmentation
@@ -57,8 +78,13 @@ pip3 install kotan
 >>> aug.predict(inputs)
 ```
 
-## Update soon...
-- 말투 바꿔주는 옵션 추가 예정
+### Speech-style conversion
+```python
+>>> from kotan import KoTAN
+>>> style = KoTAN(task="augmentation", style="king")
+>>> inputs=['나는 온 세상 사람들이 행복해지길 바라', '나는 선한 영향력을 펼치는 사람이 되고 싶어']
+>>> style.predict(inputs)
+```
 
 ## Citation
 ```
