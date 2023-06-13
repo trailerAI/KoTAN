@@ -31,11 +31,11 @@ class KoTANAugmentationFactory:
 
     def load(self, device):
         if self.level == "fine":
-            ko2en_tokenizer = AutoTokenizer.from_pretrained("KoJLabs/nllb-finetuned-ko2en")
-            en2ko_tokenizer = AutoTokenizer.from_pretrained("KoJLabs/nllb-finetuned-en2ko")
+            ko2en_tokenizer = AutoTokenizer.from_pretrained("NHNDQ/nllb-finetuned-ko2en")
+            en2ko_tokenizer = AutoTokenizer.from_pretrained("NHNDQ/nllb-finetuned-en2ko")
 
-            ko2en_model = AutoModelForSeq2SeqLM.from_pretrained("KoJLabs/nllb-finetuned-ko2en").to(device)
-            en2ko_model = AutoModelForSeq2SeqLM.from_pretrained("KoJLabs/nllb-finetuned-en2ko").to(device)
+            ko2en_model = AutoModelForSeq2SeqLM.from_pretrained("NHNDQ/nllb-finetuned-ko2en").to(device)
+            en2ko_model = AutoModelForSeq2SeqLM.from_pretrained("NHNDQ/nllb-finetuned-en2ko").to(device)
 
         
         elif self.level == "origin":
@@ -50,7 +50,7 @@ class KoTANAugmentationFactory:
             style_transfer_pipeline = None
         else:
             style = self.style
-            style_checkpoint = "KoJLabs/bart-speech-style-converter"
+            style_checkpoint = "NHNDQ/bart-speech-style-converter"
             style_tokenizer = AutoTokenizer.from_pretrained(style_checkpoint)
             style_transfer_pipeline = pipeline('text2text-generation',model=style_checkpoint, tokenizer=style_tokenizer)
 
