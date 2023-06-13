@@ -2,6 +2,7 @@
 
 A `KoTAN` package can exercise korean data augmentation task and en->ko, ko->en translation task.
 In case of translation model, we are fine-tuning facebook [NLLB](https://arxiv.org/abs/2207.04672) model. About data augmentation task, we processe backtranslation task.
+In addition, we also provide speech-style conversion options.
 
 ## Package install
 * `torch=2.0.0 (cuda 12.0)` and `python>=3.8` are avaliable.
