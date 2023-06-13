@@ -4,7 +4,7 @@ from transformers import BatchEncoding
 
 class KoTANStyleConversiontFactory:
     """
-    Speech-style convert using KoJLabs/bart-speech-style-converter
+    Speech-style convert using NHNDQ/bart-speech-style-converter
 
     - dataset: Train
 
