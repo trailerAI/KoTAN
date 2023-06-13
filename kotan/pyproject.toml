@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "kotan"
-version = "0.1.4"
+version = "1.0.1"
 description = ""
 authors = ["jisukim <jisukim8873@gmail.com>"]
 readme = "README.md"
