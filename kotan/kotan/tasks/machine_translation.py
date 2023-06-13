@@ -30,12 +30,12 @@ class KoTANTranslationFactory:
 
     def load(self, device: str):
         if self.tgt == "kor_Hang":
-            tokenizer = AutoTokenizer.from_pretrained("KoJLabs/nllb-finetuned-en2ko")
-            model = AutoModelForSeq2SeqLM.from_pretrained("KoJLabs/nllb-finetuned-en2ko").to(device)
+            tokenizer = AutoTokenizer.from_pretrained("NHNDQ/nllb-finetuned-en2ko")
+            model = AutoModelForSeq2SeqLM.from_pretrained("NHNDQ/nllb-finetuned-en2ko").to(device)
             
         if self.tgt == "eng_Latn":
-            tokenizer = AutoTokenizer.from_pretrained("KoJLabs/nllb-finetuned-ko2en")
-            model = AutoModelForSeq2SeqLM.from_pretrained("KoJLabs/nllb-finetuned-ko2en").to(device)
+            tokenizer = AutoTokenizer.from_pretrained("NHNDQ/nllb-finetuned-ko2en")
+            model = AutoModelForSeq2SeqLM.from_pretrained("NHNDQ/nllb-finetuned-ko2en").to(device)
 
         return KoTANTranslation(
             model,
