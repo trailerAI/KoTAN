@@ -28,8 +28,8 @@ class KoTANStyleConversiontFactory:
         self.style = style
 
     def load(self, device: str):
-        tokenizer = AutoTokenizer.from_pretrained("KoJLabs/bart-speech-style-converter")
-        model = AutoModelForSeq2SeqLM.from_pretrained("KoJLabs/bart-speech-style-converter").to(device)
+        tokenizer = AutoTokenizer.from_pretrained("NHNDQ/bart-speech-style-converter")
+        model = AutoModelForSeq2SeqLM.from_pretrained("NHNDQ/bart-speech-style-converter").to(device)
             
         return KoTANConversion(
             model,
