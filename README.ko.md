@@ -93,6 +93,9 @@ pip3 install kotan
 >>> style.predict(inputs)
 ```
 
+## Demo
+[Huggingface KoTAN Space](https://huggingface.co/spaces/KoJLabs/KoTAN)
+
 ## Citation
 KoTAN 라이브러리를 프로젝트 혹은 연구에 활용하신다면 아래 정보를 인용해주시길 바랍니다.
 ```
