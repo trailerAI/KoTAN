@@ -77,7 +77,7 @@ class KoTANAugmentation:
             output (list): Backtranslation results
         """       
 
-        if type(text) == 'str':
+        if type(text) == type('text'):
             text = [text]
 
         # post-processing
