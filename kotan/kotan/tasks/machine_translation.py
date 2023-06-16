@@ -75,11 +75,11 @@ class KoTANTranslation:
         post_output = []
 
         for inp, outp in zip(text, output):
-            if inp == '':
-                post_output.append('')
+            if (inp == '') or (inp == '!') or (inp == '?') or (inp == '.')\
+                (inp == ','):
+                post_output.append(inp)
             else:
                 post_output.append(outp)
-        
 
         return post_output
     
