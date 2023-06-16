@@ -115,8 +115,16 @@ class KoTANAugmentation:
         )
 
         translation = tokenizer.batch_decode(translated_tokens, skip_special_tokens=True)
+
+        post_output = []
+
+        for inp, outp in zip(text, translation):
+            if inp == '':
+                post_output.append('')
+            else:
+                post_output.append(outp)
         
-        return translation
+        return post_output
     
     def _style_transfer(self, text, pipeline, style):
         text = [f"{style} 형식으로 변환:{sentence}" for sentence in text]
