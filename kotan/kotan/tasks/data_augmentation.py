@@ -1,5 +1,7 @@
 from transformers import AutoTokenizer, AutoModelForSeq2SeqLM
 from transformers import pipeline
+from konlpy.tag import Twitter
+import numpy as np
 
 class KoTANAugmentationFactory:
     """
@@ -89,20 +91,36 @@ class KoTANAugmentation:
 
         Returns:
             output (list): Backtranslation results
-        """
-
-        # ko2en
-        translation = self._translate(text, 'eng_Latn', self.ko2en_tokenizer, self.ko2en_model)
-
-        # en2ko
-        backtranslation = self._translate(translation, 'kor_Hang', self.en2ko_tokenizer, self.en2ko_model)
+        """       
 
         # style transfer
         if self.style_transfer_pipeline != None:
+            # ko2en
+            translation = self._translate(text, 'eng_Latn', self.ko2en_tokenizer, self.ko2en_model)
+
+            # en2ko
+            backtranslation = self._translate(translation, 'kor_Hang', self.en2ko_tokenizer, self.en2ko_model)
             style_transfer = self._style_transfer(backtranslation, self.style_transfer_pipeline, self.style)
             return style_transfer
+        
         else:
-            return backtranslation
+            post_process_output = []
+            
+            for i in range(len(text)):
+                emojiList, textList = self._post_process(text[i])
+                print(emojiList)
+                # ko2en
+                translation = self._translate(textList, 'eng_Latn', self.ko2en_tokenizer, self.ko2en_model)
+                # en2ko
+                augList = self._translate(translation, 'kor_Hang', self.en2ko_tokenizer, self.en2ko_model)
+                outList = []
+                for emo, txt in zip(emojiList, augList):
+                    output = txt + emo
+                    outList.append(output)
+                    output = ''.join(outList).strip()
+                post_process_output.append(output)
+
+            return post_process_output
 
 
     def _translate(self, text, tgt, tokenizer, model):
@@ -131,9 +149,47 @@ class KoTANAugmentation:
         out = pipeline(text, max_length=100)
         out = [ sentence['generated_text'] for sentence in out ]
         return out
+    
+    def _post_process(self, text):
+        textList = []
+        emojiList = []
+        twit = Twitter()
 
+        posText = twit.pos(text)
+        posArray = np.array(posText)
 
+        for i in range(len(posArray)):
+            if posArray[i][1] == 'KoreanParticle':
+                emojiList.append(posArray[i][0])
 
+        for i in range(len(emojiList)):
+            splitText = text.split(emojiList[i], maxsplit=1)
 
+            if splitText[0] == '':
+                textList.append('')
+            else:
+                textList.append(splitText[0])
 
-        
+            try:
+                if len(splitText[1:]) > 1:
+                    text = ''.join(splitText[1:]).strip()
+                else:
+                    text = splitText[1:][0].strip()
+
+            except:
+                break
+
+            try:
+                if text in emojiList[i+1]:
+                    pass
+            except:
+                textList.append(splitText[-1])
+                emojiList.append('')
+                break
+
+        ## 이모지 없는 경우            
+        if len(emojiList) < 1:
+            emojiList.append('')
+            textList.append(text)
+                
+        return emojiList, textList

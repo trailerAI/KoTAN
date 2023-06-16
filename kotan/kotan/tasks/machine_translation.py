@@ -1,6 +1,6 @@
 from transformers import AutoTokenizer, AutoModelForSeq2SeqLM
-import torch
-from transformers import BatchEncoding
+from konlpy.tag import Twitter
+import numpy as np
 
 class KoTANTranslationFactory:
     """
@@ -82,5 +82,49 @@ class KoTANTranslation:
         
 
         return post_output
+    
+    def _post_process(self, text):
+        textList = []
+        emojiList = []
+        twit = Twitter()
+
+        posText = twit.pos(text)
+        posArray = np.array(posText)
+
+        for i in range(len(posArray)):
+            if posArray[i][1] == 'KoreanParticle':
+                emojiList.append(posArray[i][0])
+
+        for i in range(len(emojiList)):
+            splitText = text.split(emojiList[i], maxsplit=1)
+
+            if splitText[0] == '':
+                textList.append('')
+            else:
+                textList.append(splitText[0])
+
+            try:
+                if len(splitText[1:]) > 1:
+                    text = ''.join(splitText[1:]).strip()
+                else:
+                    text = splitText[1:][0].strip()
+
+            except:
+                break
+
+            try:
+                if text in emojiList[i+1]:
+                    pass
+            except:
+                textList.append(splitText[-1])
+                emojiList.append('')
+                break
+
+        ## 이모지 없는 경우            
+        if len(emojiList) < 1:
+            emojiList.append('')
+            textList.append(text)
+                
+        return emojiList, textList
     
 
