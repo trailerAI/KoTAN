@@ -62,7 +62,8 @@ class KoTANTranslation:
         Returns:
             output (list): Translation results
         """
-        
+
+        ## text가 '' 일 경우, '' 그대로 출력되도록 후처리
         inputs = self.tokenizer(text, padding=True, truncation=True, return_tensors="pt")
             
         translated_tokens = self.model.generate(
@@ -70,7 +71,16 @@ class KoTANTranslation:
         )
 
         output = self.tokenizer.batch_decode(translated_tokens, skip_special_tokens=True)
-            
-        return output
+
+        post_output = []
+
+        for inp, outp in zip(text, output):
+            if inp == '':
+                post_output.append('')
+            else:
+                post_output.append(outp)
+        
+
+        return post_output
     
 
