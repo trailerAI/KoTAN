@@ -88,7 +88,7 @@ pip3 install kotan
 ### Speech-style conversion
 ```python
 >>> from kotan import KoTAN
->>> style = KoTAN(task="augmentation", style="king")
+>>> style = KoTAN(task="style", style="king")
 >>> inputs=['나는 온 세상 사람들이 행복해지길 바라', '나는 선한 영향력을 펼치는 사람이 되고 싶어']
 >>> style.predict(inputs)
 ```
