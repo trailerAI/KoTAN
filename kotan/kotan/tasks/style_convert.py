@@ -58,11 +58,12 @@ class KoTANConversion:
             output (list): Style conversion results
         """
 
-        if len(text) > 1:
+        if type(text) == type([]):
             input_text = []
             
             for txt in text:
                 input_text.append(f"{self.style} 형식으로 변환:" + txt)
+        
         else:
             input_text = f"{self.style} 형식으로 변환:" + text
 
