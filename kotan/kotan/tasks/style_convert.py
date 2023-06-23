@@ -68,7 +68,7 @@ class KoTANConversion:
             input_text = f"{self.style} 형식으로 변환:" + text
 
         
-        inputs = self.tokenizer(input_text, max_length=128, return_tensors="pt")["input_ids"]
+        inputs = self.tokenizer(input_text, max_length=128, padding=True, truncation=True, return_tensors="pt")["input_ids"]
             
         convert_tokens = self.model.generate(
             inputs.to(self.device), max_length=128
