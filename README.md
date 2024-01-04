@@ -93,15 +93,15 @@ pip3 install kotan
 ## Citation
 ```
 @misc{KoTAN,
-  author       = {Juhwan Lee and Jisu Kim},
+  author       = {Juhwan Lee, Jisu Kim, TakSung Heo, and Minsu Jeong},
   title        = {KoTAN: Korean Translation and Augmentation with fine-tuned NLLB},
-  howpublished = {\url{https://github.com/KoJLabs/KoTAN}},
+  howpublished = {\url{https://github.com/trailerAI/KoTAN}},
   year         = {2023},
 }
 ```
 
 ## Contributors
-[Jisu, Kim](https://github.com/merry555), [Juhwan, Lee](https://github.com/juhwanlee-diquest)
+[Jisu, Kim](https://github.com/merry555), [Juhwan, Lee](https://github.com/juhwanlee-diquest), [TakSung Heo](https://github.com/HeoTaksung), and [Minsu Jeong]()
 
 ## License
 `KoTAN` project follow **Apache License 2.0 lisence**
